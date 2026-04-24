@@ -104,15 +104,6 @@ export function PlanningView({ weekStart, plats, initialPlanning, pastPlannings 
 
   const onModeChange = (m: PlanningMode) => {
     setMode(m);
-    setSlots((prev) =>
-      prev.map((s) => {
-        const keep =
-          m === "midi_soir" ||
-          (m === "midi" && s.moment === "midi") ||
-          (m === "soir" && s.moment === "soir");
-        return keep ? s : { ...s, plat: null };
-      })
-    );
     setIsDirty(true);
   };
 
@@ -132,10 +123,15 @@ export function PlanningView({ weekStart, plats, initialPlanning, pastPlannings 
   const onSave = async () => {
     setSaving(true);
     try {
+      const slotsToSave = slots.filter((s) =>
+        mode === "midi_soir" ||
+        (mode === "midi" && s.moment === "midi") ||
+        (mode === "soir" && s.moment === "soir")
+      );
       await upsertPlanning({
         semaine_debut: weekStart,
         mode,
-        repas: slots.map((s) => ({
+        repas: slotsToSave.map((s) => ({
           jour: s.jour,
           moment: s.moment,
           plat_id: s.plat?.id ?? null,

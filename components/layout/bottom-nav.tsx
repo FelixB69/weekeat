@@ -44,7 +44,7 @@ export function BottomNav() {
   return (
     <nav
       aria-label="Navigation principale"
-      className="md:hidden fixed bottom-0 inset-x-0 h-20 bg-[var(--surface)] border-t border-[var(--border)] flex items-center justify-around px-1 pb-safe z-40"
+      className="md:hidden fixed bottom-0 inset-x-0 bg-[var(--surface)] border-t border-[var(--border)] flex items-center justify-around px-1 pt-2 pb-safe z-40"
     >
       {TABS.map(({ href, label, Icon, match }) => {
         const active = match(pathname);
