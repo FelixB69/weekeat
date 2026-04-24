@@ -1,0 +1,442 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------
+   Design tokens — direction "Editorial Épuré"
+   Source: weekeat design handoff (chat1.md, Weekeat.html)
+   --------------------------------------------------------------- */
+@theme inline {
+  --color-accent: #e92bc6;
+  --color-accent-dark: #c41ea8;
+  --color-accent-soft: rgba(233, 43, 198, 0.09);
+
+  --color-green: #1a9e5c;
+  --color-green-soft: rgba(26, 158, 92, 0.09);
+
+  --color-bg: #f4f3f0;
+  --color-surface: #ffffff;
+
+  --color-t1: #0a0908;
+  --color-t2: #6b6460;
+  --color-t3: #aba5a1;
+
+  --color-border: #e5e1dd;
+  --color-border-soft: #edebe7;
+
+  --color-error: #d63b3b;
+  --color-error-soft: rgba(214, 59, 59, 0.08);
+
+  --font-display: "Playfair Display", ui-serif, Georgia, serif;
+  --font-sans: "Plus Jakarta Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Inter", "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+  --accent: #e92bc6;
+  --accent-dark: #c41ea8;
+  --accent-soft: rgba(233, 43, 198, 0.09);
+  --green: #1a9e5c;
+  --green-soft: rgba(26, 158, 92, 0.09);
+  --bg: #f4f3f0;
+  --surface: #ffffff;
+  --t1: #0a0908;
+  --t2: #6b6460;
+  --t3: #aba5a1;
+  --border: #e5e1dd;
+  --border-soft: #edebe7;
+  --error: #d63b3b;
+  --error-soft: rgba(214, 59, 59, 0.08);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  background: var(--bg);
+  color: var(--t1);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv11";
+  overscroll-behavior-y: none;
+}
+
+body {
+  min-height: 100dvh;
+}
+
+h1,
+h2 {
+  font-family: var(--font-display);
+  letter-spacing: -0.5px;
+}
+
+h3,
+.label-ui {
+  font-family: var(--font-sans);
+}
+
+/* Hide scrollbars on horizontal scroll areas */
+.scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* ---------------------------------------------------------------
+   Components
+   --------------------------------------------------------------- */
+
+/* Buttons ----------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  border-radius: 14px;
+  transition: transform 0.12s ease, background 0.15s, color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  font-size: 15px;
+  padding: 15px 24px;
+  letter-spacing: -0.2px;
+}
+.btn-primary:hover:not(:disabled) {
+  background: var(--accent-dark);
+}
+.btn-secondary {
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 15px;
+  padding: 15px 24px;
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--t2);
+  font-size: 14px;
+  padding: 12px 18px;
+  border: 1px solid var(--border);
+}
+.btn-ghost:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.btn-danger {
+  background: var(--error-soft);
+  color: var(--error);
+  font-size: 15px;
+  padding: 15px 24px;
+}
+.btn-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  padding: 0;
+  background: var(--border-soft);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--t2);
+  transition: all 0.15s;
+}
+.btn-icon:active {
+  transform: scale(0.93);
+}
+.btn-icon.accent {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+/* Inputs ------------------------------------------------------ */
+.input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  color: var(--t1);
+  outline: none;
+  transition: border-color 0.15s;
+}
+.input:focus {
+  border-color: var(--accent);
+}
+.input::placeholder {
+  color: var(--t3);
+}
+.input-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--t2);
+  margin-bottom: 6px;
+  display: block;
+  letter-spacing: 0.3px;
+}
+.input-error {
+  color: var(--error);
+  font-size: 12px;
+  margin-top: 6px;
+  font-weight: 600;
+}
+
+/* Chips ------------------------------------------------------- */
+.chip {
+  padding: 7px 14px;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--t2);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.13s;
+  flex-shrink: 0;
+}
+.chip.active {
+  background: var(--t1);
+  border-color: var(--t1);
+  color: #fff;
+}
+
+/* Badge ------------------------------------------------------- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+.badge-accent {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.badge-muted {
+  background: var(--border-soft);
+  color: var(--t2);
+}
+.badge-green {
+  background: var(--green-soft);
+  color: var(--green);
+}
+
+/* Toggle ------------------------------------------------------ */
+.toggle-wrap {
+  width: 46px;
+  height: 26px;
+  border-radius: 100px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.2s;
+  flex-shrink: 0;
+  background: var(--border);
+}
+.toggle-wrap.on {
+  background: var(--accent);
+}
+.toggle-thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 0.2s;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+}
+.toggle-wrap.on .toggle-thumb {
+  transform: translateX(20px);
+}
+
+/* Typography helpers ----------------------------------------- */
+.eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--t3);
+}
+.section-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--t3);
+}
+.display-xl {
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -1px;
+}
+.display-lg {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+}
+.display-md {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+}
+
+/* Animations -------------------------------------------------- */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes dotPulse {
+  0%,
+  80%,
+  100% {
+    transform: scale(0.6);
+    opacity: 0.3;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.anim-fadeUp {
+  animation: fadeUp 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.anim-fadeIn {
+  animation: fadeIn 0.2s ease both;
+}
+.anim-slideUp {
+  animation: slideUp 0.3s cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.65s linear infinite;
+}
+
+/* Sheet / modal ---------------------------------------------- */
+.sheet-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 9, 8, 0.6);
+  backdrop-filter: blur(2px);
+  z-index: 60;
+  animation: fadeIn 0.2s ease both;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.sheet {
+  background: var(--surface);
+  border-radius: 28px 28px 0 0;
+  max-height: 88dvh;
+  overflow-y: auto;
+  animation: slideUp 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+  scrollbar-width: none;
+}
+.sheet::-webkit-scrollbar {
+  display: none;
+}
+.sheet-handle {
+  width: 32px;
+  height: 3px;
+  background: var(--border);
+  border-radius: 100px;
+  margin: 12px auto 0;
+}
+
+/* Toast ------------------------------------------------------- */
+.toast {
+  position: fixed;
+  bottom: calc(90px + env(safe-area-inset-bottom));
+  left: 20px;
+  right: 20px;
+  z-index: 70;
+  background: var(--t1);
+  color: #fff;
+  border-radius: 14px;
+  padding: 13px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: fadeUp 0.3s ease both;
+  letter-spacing: -0.1px;
+  max-width: 520px;
+  margin: 0 auto;
+}
+.toast-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+/* Safe-area helpers ------------------------------------------ */
+.pb-safe {
+  padding-bottom: calc(16px + env(safe-area-inset-bottom));
+}
+.pt-safe {
+  padding-top: calc(16px + env(safe-area-inset-top));
+}

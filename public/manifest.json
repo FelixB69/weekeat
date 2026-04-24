@@ -1,0 +1,38 @@
+{
+  "name": "Weekeat — Planifiez, Cuisinez, Régalez-vous",
+  "short_name": "Weekeat",
+  "description": "La PWA pour planifier vos repas, générer votre liste de courses et garder vos recettes à portée de main.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F4F3F0",
+  "theme_color": "#F4F3F0",
+  "lang": "fr",
+  "dir": "ltr",
+  "categories": ["food", "lifestyle", "productivity"],
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "/icons/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ],
+  "shortcuts": [
+    {
+      "name": "Planning",
+      "url": "/planning",
+      "description": "Ouvrir mon planning de la semaine"
+    },
+    {
+      "name": "Liste de courses",
+      "url": "/courses",
+      "description": "Voir ma liste de courses"
+    },
+    {
+      "name": "Nouveau plat",
+      "url": "/plats/nouveau",
+      "description": "Ajouter un nouveau plat à mon livre"
+    }
+  ]
+}
