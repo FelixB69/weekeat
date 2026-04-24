@@ -187,7 +187,7 @@ export function PlatForm({ mode, initial }: PlatFormProps) {
           <span className="input-label !mb-0">Ingrédients</span>
           <button
             type="button"
-            onClick={() => append({ nom: "", quantite: undefined, unite: "autre" })}
+            onClick={() => append({ nom: "", quantite: null, unite: "autre" })}
             className="text-[12px] font-bold text-[var(--accent)] flex items-center gap-1"
           >
             <IconPlus size={14} />

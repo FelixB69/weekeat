@@ -4,6 +4,7 @@ import { mondayOf } from "@/lib/utils";
 import type {
   PlanningComplet,
   PlatWithIngredients,
+  Profile,
 } from "@/lib/types/database.types";
 
 export const metadata = { title: "Accueil" };
@@ -26,7 +27,7 @@ export default async function HomePage() {
 
   return (
     <Dashboard
-      displayName={profile?.display_name || user!.email?.split("@")[0] || "Marie"}
+      displayName={(profile as Profile | null)?.display_name || user!.email?.split("@")[0] || "Marie"}
       plats={(plats ?? []) as PlatWithIngredients[]}
       planning={(planning ?? null) as PlanningComplet | null}
     />

@@ -34,21 +34,21 @@ async function requireUser() {
 export async function upsertPlanning(args: UpsertPlanningArgs) {
   const { supabase, user } = await requireUser();
 
-  const { data: planning, error } = await supabase
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const sb = supabase as any;
+
+  const { data: planning, error } = (await sb
     .from("plannings")
     .upsert(
-      {
-        user_id: user.id,
-        semaine_debut: args.semaine_debut,
-        mode: args.mode,
-      },
+      { user_id: user.id, semaine_debut: args.semaine_debut, mode: args.mode },
       { onConflict: "user_id,semaine_debut" }
     )
     .select()
-    .single();
+    .single()) as { data: { id: string } | null; error: { message: string } | null };
   if (error) throw new Error(error.message);
+  if (!planning) throw new Error("Planning introuvable après upsert");
 
-  await supabase.from("planning_repas").delete().eq("planning_id", planning.id);
+  await sb.from("planning_repas").delete().eq("planning_id", planning.id);
 
   const rows = args.repas.map((r) => ({
     planning_id: planning.id,
@@ -58,7 +58,9 @@ export async function upsertPlanning(args: UpsertPlanningArgs) {
     verrouille: r.verrouille,
   }));
   if (rows.length > 0) {
-    const { error: rErr } = await supabase.from("planning_repas").insert(rows);
+    const { error: rErr } = (await sb.from("planning_repas").insert(rows)) as {
+      error: { message: string } | null;
+    };
     if (rErr) throw new Error(rErr.message);
   }
 
@@ -70,16 +72,25 @@ export async function upsertPlanning(args: UpsertPlanningArgs) {
 
 export async function listPlannings() {
   const { supabase, user } = await requireUser();
+
+  // Récupère les IDs des plannings qui ont au moins un repas planifié
+  const { data: repasRows } = await supabase
+    .from("planning_repas")
+    .select("planning_id")
+    .not("plat_id", "is", null);
+
+  const planningIds = [...new Set(((repasRows ?? []) as { planning_id: string }[]).map((r) => r.planning_id))];
+  if (planningIds.length === 0) return [];
+
   const { data } = await supabase
     .from("plannings")
-    .select("id, semaine_debut, mode, repas:planning_repas(plat_id)")
+    .select("id, semaine_debut, mode")
     .eq("user_id", user.id)
+    .in("id", planningIds)
     .order("semaine_debut", { ascending: false })
     .limit(52);
-  type Row = { id: string; semaine_debut: string; mode: string; repas: { plat_id: string | null }[] };
-  return (data as Row[] ?? [])
-    .filter((p) => p.repas.some((r) => r.plat_id !== null))
-    .map(({ repas: _, ...p }) => p);
+
+  return (data ?? []) as { id: string; semaine_debut: string; mode: string }[];
 }
 
 export async function getPlanningForWeek(semaine_debut: string) {
@@ -100,6 +111,7 @@ export async function getPlanningForWeek(semaine_debut: string) {
     user_id: user.id,
     semaine_debut,
     mode: "midi_soir" as const,
+    created_at: "",
     repas: [],
   };
 }

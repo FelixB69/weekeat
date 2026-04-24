@@ -20,7 +20,7 @@ export default async function ProfilPage() {
   return (
     <ProfileView
       email={user!.email ?? ""}
-      displayName={profile?.display_name ?? user!.email?.split("@")[0] ?? "Marie"}
+      displayName={(profile as { display_name: string | null } | null)?.display_name ?? user!.email?.split("@")[0] ?? "Marie"}
       platsCount={platsCount ?? 0}
       planningsCount={planningsCount ?? 0}
       currentWeek={mondayOf()}

@@ -18,7 +18,9 @@ export async function createPlat(input: PlatInput) {
   const parsed = platSchema.parse(input);
   const { supabase, user } = await requireUser();
 
-  const { data: plat, error } = await supabase
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const sb = supabase as any;
+  const { data: plat, error } = (await sb
     .from("plats")
     .insert({
       user_id: user.id,
@@ -28,18 +30,19 @@ export async function createPlat(input: PlatInput) {
       photo_url: parsed.photo_url ?? null,
     })
     .select()
-    .single();
+    .single()) as { data: { id: string } | null; error: { message: string } | null };
   if (error) throw new Error(error.message);
+  if (!plat) throw new Error("Plat introuvable après insert");
 
   if (parsed.ingredients.length > 0) {
-    const { error: ingError } = await supabase.from("ingredients").insert(
+    const { error: ingError } = (await sb.from("ingredients").insert(
       parsed.ingredients.map((i) => ({
         plat_id: plat.id,
         nom: i.nom,
         quantite: i.quantite,
         unite: i.unite,
       }))
-    );
+    )) as { error: { message: string } | null };
     if (ingError) throw new Error(ingError.message);
   }
 
@@ -52,7 +55,9 @@ export async function updatePlat(id: string, input: PlatInput) {
   const parsed = platSchema.parse(input);
   const { supabase } = await requireUser();
 
-  const { error } = await supabase
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const sb = supabase as any;
+  const { error } = (await sb
     .from("plats")
     .update({
       nom: parsed.nom,
@@ -60,21 +65,21 @@ export async function updatePlat(id: string, input: PlatInput) {
       categorie: parsed.categorie,
       photo_url: parsed.photo_url ?? null,
     })
-    .eq("id", id);
+    .eq("id", id)) as { error: { message: string } | null };
   if (error) throw new Error(error.message);
 
-  const { error: delErr } = await supabase.from("ingredients").delete().eq("plat_id", id);
+  const { error: delErr } = (await sb.from("ingredients").delete().eq("plat_id", id)) as { error: { message: string } | null };
   if (delErr) throw new Error(delErr.message);
 
   if (parsed.ingredients.length > 0) {
-    const { error: ingError } = await supabase.from("ingredients").insert(
+    const { error: ingError } = (await sb.from("ingredients").insert(
       parsed.ingredients.map((i) => ({
         plat_id: id,
         nom: i.nom,
         quantite: i.quantite,
         unite: i.unite,
       }))
-    );
+    )) as { error: { message: string } | null };
     if (ingError) throw new Error(ingError.message);
   }
 

@@ -29,7 +29,7 @@ export default async function PlanningPage({
       key={weekStart}
       weekStart={weekStart}
       plats={(plats ?? []) as PlatWithIngredients[]}
-      initialPlanning={planning as PlanningComplet}
+      initialPlanning={planning as unknown as PlanningComplet}
       pastPlannings={pastPlannings}
     />
   );

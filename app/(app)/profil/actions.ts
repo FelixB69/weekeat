@@ -12,10 +12,11 @@ export async function updateDisplayName(displayName: string) {
   if (!user) redirect("/login");
   const trimmed = displayName.trim().slice(0, 80);
   if (trimmed.length < 2) throw new Error("Nom trop court");
-  const { error } = await supabase
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { error } = await (supabase as any)
     .from("profiles")
     .update({ display_name: trimmed })
-    .eq("id", user.id);
+    .eq("id", user.id) as { error: { message: string } | null };
   if (error) throw new Error(error.message);
   revalidatePath("/profil");
   revalidatePath("/");

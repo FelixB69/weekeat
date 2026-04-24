@@ -33,7 +33,7 @@ export type JourSemaine =
 
 export type MomentRepas = "midi" | "soir";
 
-export interface Database {
+export type Database = {
   public: {
     Tables: {
       profiles: {
@@ -55,6 +55,7 @@ export interface Database {
           avatar_url?: string | null;
           created_at?: string;
         };
+        Relationships: [];
       };
       plats: {
         Row: {
@@ -77,7 +78,17 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
-        Update: Partial<Database["public"]["Tables"]["plats"]["Insert"]>;
+        Update: {
+          id?: string;
+          user_id?: string;
+          nom?: string;
+          temps_cuisson?: number | null;
+          categorie?: PlatCategorie;
+          photo_url?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
       };
       ingredients: {
         Row: {
@@ -94,7 +105,14 @@ export interface Database {
           quantite?: number | null;
           unite?: IngredientUnite;
         };
-        Update: Partial<Database["public"]["Tables"]["ingredients"]["Insert"]>;
+        Update: {
+          id?: string;
+          plat_id?: string;
+          nom?: string;
+          quantite?: number | null;
+          unite?: IngredientUnite;
+        };
+        Relationships: [];
       };
       plannings: {
         Row: {
@@ -111,7 +129,14 @@ export interface Database {
           mode?: PlanningMode;
           created_at?: string;
         };
-        Update: Partial<Database["public"]["Tables"]["plannings"]["Insert"]>;
+        Update: {
+          id?: string;
+          user_id?: string;
+          semaine_debut?: string;
+          mode?: PlanningMode;
+          created_at?: string;
+        };
+        Relationships: [];
       };
       planning_repas: {
         Row: {
@@ -130,9 +155,20 @@ export interface Database {
           moment: MomentRepas;
           verrouille?: boolean;
         };
-        Update: Partial<Database["public"]["Tables"]["planning_repas"]["Insert"]>;
+        Update: {
+          id?: string;
+          planning_id?: string;
+          plat_id?: string | null;
+          jour?: JourSemaine;
+          moment?: MomentRepas;
+          verrouille?: boolean;
+        };
+        Relationships: [];
       };
     };
+    Views: { [_ in never]: never };
+    Functions: { [_ in never]: never };
+    CompositeTypes: { [_ in never]: never };
     Enums: {
       plat_categorie: PlatCategorie;
       ingredient_unite: IngredientUnite;
@@ -141,7 +177,7 @@ export interface Database {
       moment_repas: MomentRepas;
     };
   };
-}
+};
 
 export type Plat = Database["public"]["Tables"]["plats"]["Row"];
 export type Ingredient = Database["public"]["Tables"]["ingredients"]["Row"];
